@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	ErrNoClosing = errors.New("No closing quotation")
-	ErrNoEscaped = errors.New("No escaped character")
+	ErrNoClosing = errors.New("no closing quotation")
+	ErrNoEscaped = errors.New("no escaped character")
 )
 
 // Tokenizer is the interface that classifies a token according to
@@ -53,26 +53,26 @@ type Lexer struct {
 	reader          *bufio.Reader
 	tokenizer       Tokenizer
 	posix           bool
-	whitespacesplit bool
+	whitespaceSplit bool
 }
 
 // NewLexer creates a new Lexer reading from io.Reader.  This Lexer
-// has a DefaultTokenizer according to posix and whitespacesplit
+// has a DefaultTokenizer according to posix and whitespaceSplit
 // rules.
-func NewLexer(r io.Reader, posix, whitespacesplit bool) *Lexer {
+func NewLexer(r io.Reader, posix, whitespaceSplit bool) *Lexer {
 	return &Lexer{
 		reader:          bufio.NewReader(r),
 		tokenizer:       &DefaultTokenizer{},
 		posix:           posix,
-		whitespacesplit: whitespacesplit,
+		whitespaceSplit: whitespaceSplit,
 	}
 }
 
 // NewLexerString creates a new Lexer reading from a string.  This
-// Lexer has a DefaultTokenizer according to posix and whitespacesplit
+// Lexer has a DefaultTokenizer according to posix and whitespaceSplit
 // rules.
-func NewLexerString(s string, posix, whitespacesplit bool) *Lexer {
-	return NewLexer(strings.NewReader(s), posix, whitespacesplit)
+func NewLexerString(s string, posix, whitespaceSplit bool) *Lexer {
+	return NewLexer(strings.NewReader(s), posix, whitespaceSplit)
 }
 
 // Split splits a string according to posix or non-posix rules.
@@ -107,7 +107,7 @@ func (l *Lexer) readToken() (string, error) {
 	token := ""
 	quoted := false
 	state := ' '
-	escapedstate := ' '
+	escapedState := ' '
 scanning:
 	for {
 		next, _, err := l.reader.ReadRune()
@@ -126,7 +126,7 @@ scanning:
 			case t.IsWhitespace(next):
 				break scanning
 			case l.posix && t.IsEscape(next):
-				escapedstate = 'a'
+				escapedState = 'a'
 				state = next
 			case t.IsWord(next):
 				token += string(next)
@@ -138,7 +138,7 @@ scanning:
 				state = next
 			default:
 				token = string(next)
-				if l.whitespacesplit {
+				if l.whitespaceSplit {
 					state = 'a'
 				} else if token != "" || (l.posix && quoted) {
 					break scanning
@@ -155,17 +155,17 @@ scanning:
 					state = 'a'
 				}
 			case l.posix && t.IsEscape(next) && t.IsEscapedQuote(state):
-				escapedstate = state
+				escapedState = state
 				state = next
 			default:
 				token += string(next)
 			}
 		case t.IsEscape(state):
-			if t.IsQuote(escapedstate) && next != state && next != escapedstate {
+			if t.IsQuote(escapedState) && next != state && next != escapedState {
 				token += string(state)
 			}
 			token += string(next)
-			state = escapedstate
+			state = escapedState
 		case t.IsWord(state):
 			switch {
 			case t.IsWhitespace(next):
@@ -175,12 +175,12 @@ scanning:
 			case l.posix && t.IsQuote(next):
 				state = next
 			case l.posix && t.IsEscape(next):
-				escapedstate = 'a'
+				escapedState = 'a'
 				state = next
 			case t.IsWord(next) || t.IsQuote(next):
 				token += string(next)
 			default:
-				if l.whitespacesplit {
+				if l.whitespaceSplit {
 					token += string(next)
 				} else if token != "" {
 					l.reader.UnreadRune()

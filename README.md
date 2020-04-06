@@ -5,7 +5,7 @@ Go.
 
 ## Install
 
-    go get -u "github.com/anmitsu/go-shlex"
+go get -u "github.com/desertbit/go-shlex"
 
 ## Usage
 
@@ -16,7 +16,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/anmitsu/go-shlex"
+    "github.com/desertbit/go-shlex"
 )
 
 func main() {
@@ -34,5 +34,5 @@ func main() {
 
 ## Documentation
 
-http://godoc.org/github.com/anmitsu/go-shlex
+http://godoc.org/github.com/desertbit/go-shlex
 

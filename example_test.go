@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/anmitsu/go-shlex"
-	flynn_shlex "github.com/flynn/go-shlex"
+	shlex "github.com/desertbit/go-shlex"
+	fshlex "github.com/flynn/go-shlex"
 )
 
 func ExampleSplit() {
@@ -59,25 +59,25 @@ func ExampleSplit() {
 func ExampleSplit_compareFlynn() {
 	cmd := `English and 日本語`
 
-	// Split for github.com/flynn/go-shlex imported as flynn_shlex
-	words_flynn, err1 := flynn_shlex.Split(cmd)
+	// Split for github.com/flynn/go-shlex imported as fshlex
+	wordsFlynn, err1 := fshlex.Split(cmd)
 
 	// Split for github.com/anmitsu/go-shlex
-	words_anmitsu, err2 := shlex.Split(cmd, true)
+	wordsAnmitsu, err2 := shlex.Split(cmd, true)
 
 	fmt.Println("Source string:")
 	fmt.Println(cmd)
 	fmt.Println()
 
 	fmt.Println("Result of github.com/flynn/go-shlex:")
-	for _, word := range words_flynn {
+	for _, word := range wordsFlynn {
 		fmt.Println(word)
 	}
 	fmt.Println(err1.Error())
 
 	fmt.Println()
 	fmt.Println("Result of github.com/anmitsu/go-shlex:")
-	for _, word := range words_anmitsu {
+	for _, word := range wordsAnmitsu {
 		fmt.Println(word)
 	}
 	if err2 != nil {
