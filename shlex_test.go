@@ -122,6 +122,11 @@ var datanonposix = []struct {
 		[]string{`"'Strip extra layer of quotes'"`},
 		nil,
 	},
+	{
+		`two "" blanks ''`,
+		[]string{"two", "\"\"", "blanks", "''"},
+		nil,
+	},
 }
 
 var dataposix = []struct {
@@ -235,6 +240,11 @@ var dataposix = []struct {
 	},
 	{`"'Strip extra layer of quotes'"`,
 		[]string{`'Strip extra layer of quotes'`},
+		nil,
+	},
+	{
+		`two "" blanks ''`,
+		[]string{"two", "", "blanks", ""},
 		nil,
 	},
 }
